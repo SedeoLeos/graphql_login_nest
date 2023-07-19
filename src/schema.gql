@@ -1,0 +1,88 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  """Example field (placeholder)"""
+  id: Int!
+  name: String!
+  describe: String!
+}
+
+type User {
+  """Example field (placeholder)"""
+  id: Int!
+  firstName: String
+  lastName: String
+  posts: [Post!]!
+}
+
+type Auth {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Query {
+  index: String!
+  post(id: Int!): Post!
+  users: [User!]!
+  user(id: Int!): User!
+  auth(id: Int!): Auth!
+}
+
+type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: Int!): Post!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  login(createAuthInput: CreateAuthInput!): Auth!
+  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
+  removeAuth(id: Int!): Auth!
+}
+
+input CreatePostInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdatePostInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  firstName: String!
+
+  """Example field (placeholder)"""
+  lastName: String!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  firstName: String
+
+  """Example field (placeholder)"""
+  lastName: String
+  id: Int!
+}
+
+input CreateAuthInput {
+  """smatsoula19@gmail.com """
+  email: String!
+
+  """**********"""
+  password: String!
+}
+
+input UpdateAuthInput {
+  """smatsoula19@gmail.com """
+  email: String
+
+  """**********"""
+  password: String
+  id: Int!
+}
