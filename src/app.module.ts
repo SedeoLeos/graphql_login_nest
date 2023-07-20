@@ -10,30 +10,40 @@ import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { SubscriptionModule } from './subscription/subscription.module';
+
 @Module({
-  imports: [ 
+  imports: [
+    AuthModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRoot({
       // include:[PostModule],
       driver: ApolloDriver,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      subscriptions: {
+        'graphql-ws': true
+      },
       // plugins: [ApolloServerPluginLandingPageLocalDefault()],
       // definitions:{
       //   path:join(process.cwd(), 'src/schema.ts'),
       // }
-      
+
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'file.db',
       entities: [],
-      autoLoadEntities:true,
+      autoLoadEntities: true,
       synchronize: true,
     }),
-    PostModule, UserModule, AuthModule],
+    PostModule, 
+    UserModule, SubscriptionModule],
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule {}
+export class AppModule { }
+
 
 

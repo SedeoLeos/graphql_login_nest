@@ -2,11 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Post {
+type Refresh {
   """Example field (placeholder)"""
   id: Int!
-  name: String!
-  describe: String!
+}
+
+type Subscription {
+  """Example field (placeholder)"""
+  id: Int!
 }
 
 type User {
@@ -14,32 +17,95 @@ type User {
   id: Int!
   firstName: String
   lastName: String
+  email: String!
+  password: String!
   posts: [Post!]!
+  refreshs: [Refresh!]!
+}
+
+type Post {
+  """Example field (placeholder)"""
+  id: Int!
+  name: String!
+  describe: String!
+  user: User!
 }
 
 type Auth {
   """Example field (placeholder)"""
-  exampleField: Int!
+  Refresh_Duretion: String
+
+  """Example field (placeholder)"""
+  Access_Token: String
+
+  """Example field (placeholder)"""
+  Scope: String
+
+  """Example field (placeholder)"""
+  Refresh_Token: String
+
+  """Example field (placeholder)"""
+  Access_Duretion: String
 }
 
 type Query {
   index: String!
-  post(id: Int!): Post!
   users: [User!]!
   user(id: Int!): User!
-  auth(id: Int!): Auth!
+  post(id: Int!): Post!
+  subscription(id: Int!): Subscription!
 }
 
 type Mutation {
-  createPost(createPostInput: CreatePostInput!): Post!
-  updatePost(updatePostInput: UpdatePostInput!): Post!
-  removePost(id: Int!): Post!
+  login(createAuthInput: CreateAuthInput!): Auth!
+  sigin(registerInput: CreateUserInput!): Auth!
+  refresh(refreshInput: CreateUserInput!): Auth!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
-  login(createAuthInput: CreateAuthInput!): Auth!
-  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
-  removeAuth(id: Int!): Auth!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: Int!): Post!
+  createSubscription(createSubscriptionInput: CreateSubscriptionInput!): Subscription!
+  updateSubscription(updateSubscriptionInput: UpdateSubscriptionInput!): Subscription!
+  removeSubscription(id: Int!): Subscription!
+}
+
+input CreateAuthInput {
+  """smatsoula19@gmail.com """
+  email: String!
+
+  """**********"""
+  password: String!
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  firstName: String!
+
+  """Example field (placeholder)"""
+  lastName: String!
+
+  """Example field (placeholder)"""
+  password: String!
+
+  """Example field (placeholder)"""
+  email: String!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  firstName: String
+
+  """Example field (placeholder)"""
+  lastName: String
+
+  """Example field (placeholder)"""
+  password: String
+
+  """Example field (placeholder)"""
+  email: String
+  id: Int!
 }
 
 input CreatePostInput {
@@ -53,36 +119,13 @@ input UpdatePostInput {
   id: Int!
 }
 
-input CreateUserInput {
+input CreateSubscriptionInput {
   """Example field (placeholder)"""
-  firstName: String!
-
-  """Example field (placeholder)"""
-  lastName: String!
+  exampleField: Int!
 }
 
-input UpdateUserInput {
+input UpdateSubscriptionInput {
   """Example field (placeholder)"""
-  firstName: String
-
-  """Example field (placeholder)"""
-  lastName: String
-  id: Int!
-}
-
-input CreateAuthInput {
-  """smatsoula19@gmail.com """
-  email: String!
-
-  """**********"""
-  password: String!
-}
-
-input UpdateAuthInput {
-  """smatsoula19@gmail.com """
-  email: String
-
-  """**********"""
-  password: String
+  exampleField: Int
   id: Int!
 }

@@ -3,42 +3,42 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class UserService {
-  listUser: Array<User> = [];
+  // listUser: Array<User> = [];
+
+  constructor(
+    @InjectRepository(User)
+    private userRepository:Repository<User>){}
   async create(partial: CreateUserInput) {
-    const password = await this.passwordHash(partial.password)
-    const user = new User({ ...partial, password: password })
-    this.listUser.push(user)
-    return user;
+    const password = await this.passwordHash(partial.password)  
+    return await this.userRepository.save({ ...partial, password: password });
   }
 
   findAll() {
-    return this.listUser;
+    return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return this.listUser.find((user) => user.id === id);
+  async findOne(id: number) {
+    return await  this.userRepository.findOne({where:{id}});
   }
-  findEmail(email: string) {
-    return this.listUser.find((user) => user.email === email);
-  }
+  async findEmail(email: string) {
+    await (await this.userRepository.find()).map((user)=>{
 
-  update(id: number, partial: UpdateUserInput) {
-    this.listUser.map((user) => {
-      if (user.id === id) {
-        return new User({ ...user, ...partial })
-      }
-      return user;
+      console.log(user) 
     })
-    return this.listUser.find((user) => user.id === id);
+    return await this.userRepository.findOne({where:{email}});
   }
 
-  remove(id: number) {
-    const userDelete = this.findOne(id)
-    const restList = this.listUser.filter((user) => user.id !== id)
-    this.listUser = restList;
-    return userDelete;
+  async update(id: number, partial: UpdateUserInput) {
+    return await this.userRepository.save({...partial,id:id})
+  }
+
+  async remove(id: number) {
+    
+    return await this.userRepository.delete({id});
   }
 
   async comparePassword(data: string, encrypted: string) {

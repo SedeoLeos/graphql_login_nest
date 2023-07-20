@@ -1,35 +1,30 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { Auth } from './entities/auth.entity';
 import { CreateAuthInput } from './dto/create-auth.input';
-import { UpdateAuthInput } from './dto/update-auth.input';
+import { AuthService } from './auth.service';
+import { CreateUserInput } from 'src/user/dto/create-user.input';
+import { Public } from './guard/auth.guard';
 
+@Public()
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) { }
 
-  @Mutation(() => Auth, { name: 'login' })
-  createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
-    return this.authService.sigin(createAuthInput);
-  }
-
-  @Query(() => [Auth], { name: 'auth' })
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Query(() => Auth, { name: 'auth' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.findOne(id);
+  @Mutation(() => Auth)
+  async login(@Args('createAuthInput') authInput: CreateAuthInput,@Context('req')req:Request) {
+   
+    return await this.authService.login(authInput, req.headers["user-agent"]);
   }
 
   @Mutation(() => Auth)
-  updateAuth(@Args('updateAuthInput') updateAuthInput: UpdateAuthInput) {
-    return this.authService.update(updateAuthInput.id, updateAuthInput);
+  async sigin(@Args('registerInput') authInput: CreateUserInput,@Context('req')req:Request) {
+    return await this.authService.sigin(authInput,req.headers["user-agent"]);
   }
 
   @Mutation(() => Auth)
-  removeAuth(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.remove(id);
+  async refresh(@Args('refreshInput') authInput: CreateUserInput,@Context('req')req:Request) {
+    return await this.authService.sigin(authInput,req.headers["user-agent"]);
   }
+
+
 }
